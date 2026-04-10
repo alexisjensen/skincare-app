@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Skin Routine</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="theme-color" content="#f7f4f2">
 <style>
   body{
@@ -15,7 +14,7 @@
     background:#f7f4f2;
     color:#222;
   }
-  .wrap{max-width:720px;margin:0 auto;}
+  .wrap{max-width:760px;margin:0 auto;}
   .card{
     background:#fff;
     border-radius:18px;
@@ -23,233 +22,245 @@
     box-shadow:0 2px 10px rgba(0,0,0,.06);
     margin-bottom:14px;
   }
-  h1{font-size:28px;margin:0 0 8px;}
-  h2{font-size:20px;margin:0 0 10px;}
-  p,li{line-height:1.45}
-  .sub{color:#666;font-size:14px;margin:0 0 14px}
-  .status{
+  h1{font-size:24px;margin:0 0 10px;}
+  h2{font-size:17px;margin:0 0 10px;}
+  .sub{font-size:13px;color:#666;margin:0 0 10px;line-height:1.4;}
+  .statusrow{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px;}
+  .pill{
     display:inline-block;
     padding:8px 12px;
     border-radius:999px;
     background:#f1ece8;
     font-size:13px;
-    margin-bottom:12px;
   }
-  input[type="radio"]{display:none}
-  .segmented,.days{
-    display:grid;
-    gap:10px;
-  }
-  .segmented{grid-template-columns:repeat(2,minmax(0,1fr));}
-  .days{grid-template-columns:repeat(2,minmax(0,1fr));}
-  @media (min-width:560px){
-    .days{grid-template-columns:repeat(4,minmax(0,1fr));}
-  }
-  label.btn{
+  .muted-pill{background:#faf7f5;color:#666;}
+  .grid2,.days{display:grid;gap:10px;}
+  .grid2{grid-template-columns:repeat(2,1fr);}
+  .days{grid-template-columns:repeat(2,1fr);}
+  @media (min-width:560px){ .days{grid-template-columns:repeat(4,1fr);} }
+  button{
     display:block;
+    width:100%;
     text-align:center;
-    padding:14px 12px;
+    padding:14px;
     border-radius:14px;
     background:#ece6e2;
     color:#222;
+    border:0;
     font-weight:600;
+    font-size:16px;
     cursor:pointer;
-    user-select:none;
-    transition:background .15s ease,color .15s ease, transform .1s ease;
+    -webkit-appearance:none;
+    appearance:none;
   }
-  label.btn:active{transform:scale(.98);}
-  #am:checked ~ .card .time-am,
-  #pm:checked ~ .card .time-pm,
-  #mon:checked ~ .card .day-mon,
-  #tue:checked ~ .card .day-tue,
-  #wed:checked ~ .card .day-wed,
-  #thu:checked ~ .card .day-thu,
-  #fri:checked ~ .card .day-fri,
-  #sat:checked ~ .card .day-sat,
-  #sun:checked ~ .card .day-sun{
-    background:#222;
-    color:#fff;
-  }
-  .routine{display:none;}
-  #am:checked ~ .results .am-default{display:block;}
-  #pm:checked ~ .results .pm-generic{display:block;}
-  #pm:checked ~ .results .pm-mon,
-  #pm:checked ~ .results .pm-thu,
-  #pm:checked ~ .results .pm-sun{display:none;}
-
-  #mon:checked ~ .results .pm-generic{display:none;}
-  #mon:checked ~ .results .pm-mon{display:block;}
-
-  #thu:checked ~ .results .pm-generic{display:none;}
-  #thu:checked ~ .results .pm-thu{display:block;}
-
-  #sun:checked ~ .results .pm-generic{display:none;}
-  #sun:checked ~ .results .pm-sun{display:block;}
-
-  #am:checked ~ .results .pm-generic,
-  #am:checked ~ .results .pm-mon,
-  #am:checked ~ .results .pm-thu,
-  #am:checked ~ .results .pm-sun{display:none;}
-
-  #mon:checked ~ .results .dayname::after{content:"Monday";}
-  #tue:checked ~ .results .dayname::after{content:"Tuesday";}
-  #wed:checked ~ .results .dayname::after{content:"Wednesday";}
-  #thu:checked ~ .results .dayname::after{content:"Thursday";}
-  #fri:checked ~ .results .dayname::after{content:"Friday";}
-  #sat:checked ~ .results .dayname::after{content:"Saturday";}
-  #sun:checked ~ .results .dayname::after{content:"Sunday";}
-
-  .pill{
-    display:inline-block;
-    padding:7px 10px;
-    border-radius:999px;
-    background:#f1ece8;
-    font-size:13px;
-    margin-right:8px;
-    margin-bottom:8px;
-  }
-  ol{margin:10px 0 0 20px;padding:0}
-  li{margin-bottom:10px}
-  .note{
+  button.active{background:#222;color:#fff;}
+  button.secondary{
     background:#faf7f5;
-    border-radius:12px;
-    padding:12px;
+    color:#444;
+    font-weight:500;
+    width:auto;
+    padding:8px 12px;
+    border-radius:999px;
+  }
+  ol{margin:0 0 0 22px;padding:0;}
+  li{margin-bottom:10px;line-height:1.45;}
+  .note{
     margin-top:12px;
+    background:#faf7f5;
+    padding:10px 12px;
+    border-radius:10px;
     font-size:14px;
     color:#555;
+    line-height:1.4;
   }
-  .small{
-    font-size:13px;
-    color:#666;
-    margin-top:8px;
-  }
+  .hidden{display:none;}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <input type="radio" name="time" id="am" checked>
-  <input type="radio" name="time" id="pm">
-
-  <input type="radio" name="day" id="mon" checked>
-  <input type="radio" name="day" id="tue">
-  <input type="radio" name="day" id="wed">
-  <input type="radio" name="day" id="thu">
-  <input type="radio" name="day" id="fri">
-  <input type="radio" name="day" id="sat">
-  <input type="radio" name="day" id="sun">
 
   <div class="card">
-    <h1>Skin Routine</h1>
-    <div class="status" id="autostatus">Using your current day and time</div>
-    <p class="sub">It should open with the right day and morning or night already selected. You can still tap to change anything manually.</p>
-    <div class="segmented">
-      <label class="btn time-am" for="am">Morning</label>
-      <label class="btn time-pm" for="pm">Night</label>
+    <div class="statusrow">
+      <span class="pill" id="autoTime">AM</span>
+      <span class="pill" id="autoDay">Monday</span>
+      <span class="pill muted-pill">Auto</span>
+    </div>
+    <h1>Routine</h1>
+    <ol id="autoSteps"></ol>
+    <div class="note" id="autoNote"></div>
+  </div>
+
+  <div class="card">
+    <h2>Time of day</h2>
+    <div class="grid2">
+      <button id="timeAM" onclick="setManualTime('AM')">Morning</button>
+      <button id="timePM" onclick="setManualTime('PM')">Night</button>
     </div>
   </div>
 
   <div class="card">
     <h2>Weekday</h2>
+    <p class="sub">Choose a day to see a manual routine below. Your auto routine above stays unchanged.</p>
     <div class="days">
-      <label class="btn day-mon" for="mon">Mon</label>
-      <label class="btn day-tue" for="tue">Tue</label>
-      <label class="btn day-wed" for="wed">Wed</label>
-      <label class="btn day-thu" for="thu">Thu</label>
-      <label class="btn day-fri" for="fri">Fri</label>
-      <label class="btn day-sat" for="sat">Sat</label>
-      <label class="btn day-sun" for="sun">Sun</label>
-    </div>
-    <p class="small">Morning = before 5 PM. Night = 5 PM and later.</p>
-  </div>
-
-  <div class="results">
-    <div class="card routine am-default">
-      <span class="pill">AM</span><span class="pill dayname"></span>
-      <h2>Morning routine</h2>
-      <ol>
-        <li>Cleanse with The Ordinary Glucoside Foaming Cleanser.</li>
-        <li>Apply Vitamin C.</li>
-        <li>Apply moisturizer: PDRN Hyaluronic Acid 100 Moisturizing Cream or The Ordinary Natural Moisturizing Factors + PhytoCeramides.</li>
-        <li>Apply Gopure Tighten &amp; Lift Neck Cream to neck.</li>
-        <li>Finish with SEPHORA COLLECTION Daily Sunscreen Cream SPF 30.</li>
-      </ol>
-      <div class="note">Optional: if skin feels dry, add a very small amount of The Ordinary Squalane. Keep it light so sunscreen still sits well.</div>
-    </div>
-
-    <div class="card routine pm-mon">
-      <span class="pill">PM</span><span class="pill">Monday</span><span class="pill">Retinol Night</span>
-      <h2>Night routine</h2>
-      <ol>
-        <li>Cleanse with The Ordinary Glucoside Foaming Cleanser.</li>
-        <li>Apply The Ordinary Retinol 1% in Squalane.</li>
-        <li>Apply moisturizer: PDRN Hyaluronic Acid 100 Moisturizing Cream or The Ordinary Natural Moisturizing Factors + PhytoCeramides.</li>
-        <li>Apply Gopure Tighten &amp; Lift Neck Cream to neck.</li>
-        <li>If needed, finish with a very small amount of The Ordinary Squalane or 100% Fermented Rose Hip Seed Oil.</li>
-      </ol>
-      <div class="note">Retinol night. Skip copper peptides tonight.</div>
-    </div>
-
-    <div class="card routine pm-thu">
-      <span class="pill">PM</span><span class="pill">Thursday</span><span class="pill">Retinol Night</span>
-      <h2>Night routine</h2>
-      <ol>
-        <li>Cleanse with The Ordinary Glucoside Foaming Cleanser.</li>
-        <li>Apply The Ordinary Retinol 1% in Squalane.</li>
-        <li>Apply moisturizer: PDRN Hyaluronic Acid 100 Moisturizing Cream or The Ordinary Natural Moisturizing Factors + PhytoCeramides.</li>
-        <li>Apply Gopure Tighten &amp; Lift Neck Cream to neck.</li>
-        <li>If needed, finish with a very small amount of The Ordinary Squalane or 100% Fermented Rose Hip Seed Oil.</li>
-      </ol>
-      <div class="note">Retinol night. Skip copper peptides tonight.</div>
-    </div>
-
-    <div class="card routine pm-sun">
-      <span class="pill">PM</span><span class="pill">Sunday</span><span class="pill">Exfoliation Night</span>
-      <h2>Night routine</h2>
-      <ol>
-        <li>Cleanse with The Ordinary Glucoside Foaming Cleanser.</li>
-        <li>Apply your exfoliant.</li>
-        <li>Apply moisturizer: PDRN Hyaluronic Acid 100 Moisturizing Cream or The Ordinary Natural Moisturizing Factors + PhytoCeramides.</li>
-        <li>Apply Gopure Tighten &amp; Lift Neck Cream to neck.</li>
-        <li>If needed, finish with a very small amount of The Ordinary Squalane or 100% Fermented Rose Hip Seed Oil.</li>
-      </ol>
-      <div class="note">Exfoliation night. Do not use retinol tonight.</div>
-    </div>
-
-    <div class="card routine pm-generic">
-      <span class="pill">PM</span><span class="pill dayname"></span><span class="pill">Recovery Night</span>
-      <h2>Night routine</h2>
-      <ol>
-        <li>Cleanse with The Ordinary Glucoside Foaming Cleanser.</li>
-        <li>Apply The Ordinary Multi-Peptide + Copper Peptides 1% Serum.</li>
-        <li>Apply moisturizer: PDRN Hyaluronic Acid 100 Moisturizing Cream or The Ordinary Natural Moisturizing Factors + PhytoCeramides.</li>
-        <li>Apply Gopure Tighten &amp; Lift Neck Cream to neck.</li>
-        <li>If needed, finish with a small amount of The Ordinary Squalane or 100% Fermented Rose Hip Seed Oil.</li>
-      </ol>
-      <div class="note">Recovery night for hydration, barrier support and calming the skin.</div>
+      <button id="dayMon" onclick="setManualDay('Monday')">Mon</button>
+      <button id="dayTue" onclick="setManualDay('Tuesday')">Tue</button>
+      <button id="dayWed" onclick="setManualDay('Wednesday')">Wed</button>
+      <button id="dayThu" onclick="setManualDay('Thursday')">Thu</button>
+      <button id="dayFri" onclick="setManualDay('Friday')">Fri</button>
+      <button id="daySat" onclick="setManualDay('Saturday')">Sat</button>
+      <button id="daySun" onclick="setManualDay('Sunday')">Sun</button>
     </div>
   </div>
+
+  <div class="card hidden" id="manualCard">
+    <div class="statusrow">
+      <span class="pill" id="manualTime">AM</span>
+      <span class="pill" id="manualDay">Monday</span>
+      <span class="pill muted-pill">Manual</span>
+      <button class="secondary" onclick="clearManual()">Clear</button>
+    </div>
+    <h1>Routine</h1>
+    <ol id="manualSteps"></ol>
+    <div class="note" id="manualNote"></div>
+  </div>
+
 </div>
 
 <script>
-(function () {
-  var dayIds = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
-  var now = new Date();
-  var dayId = dayIds[now.getDay()];
-  var hour = now.getHours();
-  var isNight = hour >= 17;
+var manualTime = null;
+var manualDay = null;
 
-  var dayEl = document.getElementById(dayId);
-  if (dayEl) dayEl.checked = true;
-
-  var timeEl = document.getElementById(isNight ? "pm" : "am");
-  if (timeEl) timeEl.checked = true;
-
-  var dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-  var status = document.getElementById("autostatus");
-  if (status) {
-    status.textContent = "Auto-selected: " + dayNames[now.getDay()] + " • " + (isNight ? "Night" : "Morning");
+function routineFor(time, day) {
+  if (time === 'AM') {
+    return {
+      steps: [
+        'Cleanse with The Ordinary Glucoside Foaming Cleanser.',
+        'Apply Vitamin C.',
+        'Apply moisturizer: PDRN Hyaluronic Acid 100 Moisturizing Cream or The Ordinary Natural Moisturizing Factors + PhytoCeramides.',
+        'Apply Gopure Tighten & Lift Neck Cream to neck.',
+        'Finish with SEPHORA COLLECTION Daily Sunscreen Cream SPF 30.'
+      ],
+      note: 'Optional: if skin feels dry, add a very small amount of The Ordinary Squalane. Keep it light so sunscreen still sits well.'
+    };
   }
-})();
+
+  if (day === 'Monday' || day === 'Thursday') {
+    return {
+      steps: [
+        'Cleanse with The Ordinary Glucoside Foaming Cleanser.',
+        'Apply The Ordinary Retinol 1% in Squalane.',
+        'Apply moisturizer: PDRN Hyaluronic Acid 100 Moisturizing Cream or The Ordinary Natural Moisturizing Factors + PhytoCeramides.',
+        'Apply Gopure Tighten & Lift Neck Cream to neck.',
+        'If needed, finish with a very small amount of The Ordinary Squalane or 100% Fermented Rose Hip Seed Oil.'
+      ],
+      note: 'Retinol night. Skip copper peptides tonight.'
+    };
+  }
+
+  if (day === 'Sunday') {
+    return {
+      steps: [
+        'Cleanse with The Ordinary Glucoside Foaming Cleanser.',
+        'Apply your exfoliant.',
+        'Apply moisturizer: PDRN Hyaluronic Acid 100 Moisturizing Cream or The Ordinary Natural Moisturizing Factors + PhytoCeramides.',
+        'Apply Gopure Tighten & Lift Neck Cream to neck.',
+        'If needed, finish with a very small amount of The Ordinary Squalane or 100% Fermented Rose Hip Seed Oil.'
+      ],
+      note: 'Exfoliation night. Do not use retinol tonight.'
+    };
+  }
+
+  return {
+    steps: [
+      'Cleanse with The Ordinary Glucoside Foaming Cleanser.',
+      'Apply The Ordinary Multi-Peptide + Copper Peptides 1% Serum.',
+      'Apply moisturizer: PDRN Hyaluronic Acid 100 Moisturizing Cream or The Ordinary Natural Moisturizing Factors + PhytoCeramides.',
+      'Apply Gopure Tighten & Lift Neck Cream to neck.',
+      'If needed, finish with a small amount of The Ordinary Squalane or 100% Fermented Rose Hip Seed Oil.'
+    ],
+    note: 'Recovery night for hydration, barrier support and calming the skin.'
+  };
+}
+
+function fillList(listId, items) {
+  var list = document.getElementById(listId);
+  list.innerHTML = '';
+  for (var i = 0; i < items.length; i++) {
+    var li = document.createElement('li');
+    li.textContent = items[i];
+    list.appendChild(li);
+  }
+}
+
+function renderAuto() {
+  var now = new Date();
+  var days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  var day = days[now.getDay()];
+  var time = now.getHours() >= 17 ? 'PM' : 'AM';
+  var routine = routineFor(time, day);
+  document.getElementById('autoTime').textContent = time;
+  document.getElementById('autoDay').textContent = day;
+  fillList('autoSteps', routine.steps);
+  document.getElementById('autoNote').textContent = routine.note;
+}
+
+function updateButtons() {
+  document.getElementById('timeAM').className = manualTime === 'AM' ? 'active' : '';
+  document.getElementById('timePM').className = manualTime === 'PM' ? 'active' : '';
+
+  var dayIds = {
+    'Monday':'dayMon',
+    'Tuesday':'dayTue',
+    'Wednesday':'dayWed',
+    'Thursday':'dayThu',
+    'Friday':'dayFri',
+    'Saturday':'daySat',
+    'Sunday':'daySun'
+  };
+
+  var keys = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+  for (var i = 0; i < keys.length; i++) {
+    document.getElementById(dayIds[keys[i]]).className = manualDay === keys[i] ? 'active' : '';
+  }
+}
+
+function renderManual() {
+  updateButtons();
+  var card = document.getElementById('manualCard');
+  if (!manualTime || !manualDay) {
+    card.className = 'card hidden';
+    return;
+  }
+  card.className = 'card';
+  var routine = routineFor(manualTime, manualDay);
+  document.getElementById('manualTime').textContent = manualTime;
+  document.getElementById('manualDay').textContent = manualDay;
+  fillList('manualSteps', routine.steps);
+  document.getElementById('manualNote').textContent = routine.note;
+}
+
+function setManualTime(value) {
+  manualTime = value;
+  renderManual();
+}
+
+function setManualDay(value) {
+  manualDay = value;
+  renderManual();
+}
+
+function clearManual() {
+  manualTime = null;
+  manualDay = null;
+  renderManual();
+}
+
+window.setManualTime = setManualTime;
+window.setManualDay = setManualDay;
+window.clearManual = clearManual;
+
+renderAuto();
+renderManual();
 </script>
 </body>
 </html>
