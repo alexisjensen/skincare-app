@@ -27,6 +27,14 @@
   h2{font-size:20px;margin:0 0 10px;}
   p,li{line-height:1.45}
   .sub{color:#666;font-size:14px;margin:0 0 14px}
+  .status{
+    display:inline-block;
+    padding:8px 12px;
+    border-radius:999px;
+    background:#f1ece8;
+    font-size:13px;
+    margin-bottom:12px;
+  }
   input[type="radio"]{display:none}
   .segmented,.days{
     display:grid;
@@ -47,7 +55,9 @@
     font-weight:600;
     cursor:pointer;
     user-select:none;
+    transition:background .15s ease,color .15s ease, transform .1s ease;
   }
+  label.btn:active{transform:scale(.98);}
   #am:checked ~ .card .time-am,
   #pm:checked ~ .card .time-pm,
   #mon:checked ~ .card .day-mon,
@@ -62,8 +72,6 @@
   }
   .routine{display:none;}
   #am:checked ~ .results .am-default{display:block;}
-
-  /* PM logic */
   #pm:checked ~ .results .pm-generic{display:block;}
   #pm:checked ~ .results .pm-mon,
   #pm:checked ~ .results .pm-thu,
@@ -78,13 +86,11 @@
   #sun:checked ~ .results .pm-generic{display:none;}
   #sun:checked ~ .results .pm-sun{display:block;}
 
-  /* Hide PM blocks when AM is selected */
   #am:checked ~ .results .pm-generic,
   #am:checked ~ .results .pm-mon,
   #am:checked ~ .results .pm-thu,
   #am:checked ~ .results .pm-sun{display:none;}
 
-  /* Day labels */
   #mon:checked ~ .results .dayname::after{content:"Monday";}
   #tue:checked ~ .results .dayname::after{content:"Tuesday";}
   #wed:checked ~ .results .dayname::after{content:"Wednesday";}
@@ -112,6 +118,11 @@
     font-size:14px;
     color:#555;
   }
+  .small{
+    font-size:13px;
+    color:#666;
+    margin-top:8px;
+  }
 </style>
 </head>
 <body>
@@ -129,7 +140,8 @@
 
   <div class="card">
     <h1>Skin Routine</h1>
-    <p class="sub">Tap time of day, then tap weekday.</p>
+    <div class="status" id="autostatus">Using your current day and time</div>
+    <p class="sub">It should open with the right day and morning or night already selected. You can still tap to change anything manually.</p>
     <div class="segmented">
       <label class="btn time-am" for="am">Morning</label>
       <label class="btn time-pm" for="pm">Night</label>
@@ -147,6 +159,7 @@
       <label class="btn day-sat" for="sat">Sat</label>
       <label class="btn day-sun" for="sun">Sun</label>
     </div>
+    <p class="small">Morning = before 5 PM. Night = 5 PM and later.</p>
   </div>
 
   <div class="results">
@@ -216,5 +229,27 @@
     </div>
   </div>
 </div>
+
+<script>
+(function () {
+  var dayIds = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
+  var now = new Date();
+  var dayId = dayIds[now.getDay()];
+  var hour = now.getHours();
+  var isNight = hour >= 17;
+
+  var dayEl = document.getElementById(dayId);
+  if (dayEl) dayEl.checked = true;
+
+  var timeEl = document.getElementById(isNight ? "pm" : "am");
+  if (timeEl) timeEl.checked = true;
+
+  var dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  var status = document.getElementById("autostatus");
+  if (status) {
+    status.textContent = "Auto-selected: " + dayNames[now.getDay()] + " • " + (isNight ? "Night" : "Morning");
+  }
+})();
+</script>
 </body>
 </html>
