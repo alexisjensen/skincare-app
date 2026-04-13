@@ -45,10 +45,6 @@
     background:#f1ece8;
     font-size:13px;
   }
-  .muted-pill{
-    background:#faf7f5;
-    color:#666;
-  }
   ol, ul{
     margin:0 0 0 22px;
     padding:0;
@@ -84,14 +80,8 @@
     border-radius:14px;
     padding:12px;
   }
-  .mini-card h3{
-    margin:0 0 6px;
-  }
-  .tiny{
-    font-size:12px;
-    color:#666;
-    margin:0 0 8px;
-  }
+  .mini-card h3{margin:0 0 6px;}
+  .tiny{font-size:12px;color:#666;margin:0 0 8px;}
 </style>
 </head>
 <body>
@@ -99,8 +89,8 @@
 
   <div class="card" id="autoCard">
     <div class="statusrow">
+      <span class="pill" id="autoDay">Friday</span>
       <span class="pill" id="autoTime">AM</span>
-      <span class="pill" id="autoDay">Monday</span>
     </div>
     <h1>Routine</h1>
     <ol id="autoSteps"></ol>
@@ -109,7 +99,7 @@
 
   <div class="card">
     <h2>Full regimen</h2>
-    <p class="sub">This is the complete plan so you can see the whole system at a glance.</p>
+    <p class="sub">Morning is always GF 15%. Nights rotate by day.</p>
 
     <div class="section">
       <h3>Morning — every day</h3>
@@ -120,7 +110,7 @@
         <li>Finish with SEPHORA COLLECTION Daily Sunscreen Cream SPF 30.</li>
         <li>Optional: apply Gopure Tighten &amp; Lift Neck Cream to neck.</li>
       </ol>
-      <div class="note">Optional only if dry: use a small amount of The Ordinary 100% Fermented Rose Hip Seed Oil. Glow is secondary here — this morning routine is built around long-term repair and protection.</div>
+      <div class="note">Optional only if dry: use a small amount of The Ordinary 100% Fermented Rose Hip Seed Oil.</div>
     </div>
 
     <div class="section">
@@ -133,62 +123,56 @@
             <li>Cleanse</li>
             <li>Retinol 1% in Squalane</li>
             <li>Moisturizer</li>
-            <li>Optional rose hip oil</li>
           </ul>
         </div>
 
         <div class="mini-card">
           <h3>Tuesday</h3>
-          <p class="tiny">Recovery night</p>
+          <p class="tiny">GF night</p>
           <ul>
             <li>Cleanse</li>
-            <li>Multi-Peptide + Copper Peptides 1% Serum</li>
+            <li>GF 15% Solution</li>
             <li>Moisturizer</li>
-            <li>Optional rose hip oil</li>
           </ul>
         </div>
 
         <div class="mini-card">
           <h3>Wednesday</h3>
-          <p class="tiny">Retinol night</p>
+          <p class="tiny">Peptides night</p>
           <ul>
             <li>Cleanse</li>
-            <li>Retinol 1% in Squalane</li>
+            <li>Multi-Peptide + Copper Peptides 1% Serum</li>
             <li>Moisturizer</li>
-            <li>Optional rose hip oil</li>
           </ul>
         </div>
 
         <div class="mini-card">
           <h3>Thursday</h3>
-          <p class="tiny">Recovery night</p>
+          <p class="tiny">GF night</p>
           <ul>
             <li>Cleanse</li>
-            <li>Multi-Peptide + Copper Peptides 1% Serum</li>
+            <li>GF 15% Solution</li>
             <li>Moisturizer</li>
-            <li>Optional rose hip oil</li>
           </ul>
         </div>
 
         <div class="mini-card">
           <h3>Friday</h3>
-          <p class="tiny">Retinol night (optional)</p>
+          <p class="tiny">Retinol night</p>
           <ul>
             <li>Cleanse</li>
             <li>Retinol 1% in Squalane</li>
             <li>Moisturizer</li>
-            <li>Optional rose hip oil</li>
           </ul>
         </div>
 
         <div class="mini-card">
           <h3>Saturday</h3>
-          <p class="tiny">Recovery night</p>
+          <p class="tiny">GF night</p>
           <ul>
             <li>Cleanse</li>
-            <li>Multi-Peptide + Copper Peptides 1% Serum</li>
+            <li>GF 15% Solution</li>
             <li>Moisturizer</li>
-            <li>Optional rose hip oil</li>
           </ul>
         </div>
 
@@ -209,7 +193,7 @@
       <h3>Barrier serum</h3>
       <ul>
         <li>Best use: after Optaderm Renewal on Sunday night.</li>
-        <li>Use it on recovery nights instead of peptides if your skin feels irritated, tight or red.</li>
+        <li>Use it instead of peptides if your skin feels irritated, tight or red.</li>
         <li>Use it as a reset night with moisturizer only if your skin feels overworked.</li>
       </ul>
     </div>
@@ -217,10 +201,9 @@
     <div class="section">
       <h3>Guardrails</h3>
       <ul>
-        <li>Do not use GF 15% on exfoliation night.</li>
         <li>Do not use retinol and Optaderm Renewal on the same night.</li>
         <li>Use rose hip oil only when needed, not by default.</li>
-        <li>If your skin gets irritated, reduce retinol frequency first.</li>
+        <li>If your skin feels irritated, reduce retinol frequency first.</li>
       </ul>
     </div>
   </div>
@@ -232,8 +215,8 @@
   function getRoutine(time, day) {
     if (time === 'AM') {
       return {
-        time: 'AM',
         day: day,
+        time: 'AM',
         steps: [
           'Cleanse with The Ordinary Glucoside Foaming Cleanser.',
           'Apply The Ordinary GF 15% Solution.',
@@ -245,47 +228,55 @@
       };
     }
 
-    if (day === 'Monday' || day === 'Wednesday' || day === 'Friday') {
-      var fridayText = day === 'Friday'
-        ? 'Friday retinol is optional. Skip it if your skin feels stressed.'
-        : 'Retinol night. Skip peptides and exfoliation tonight.';
+    if (day === 'Monday' || day === 'Friday') {
       return {
-        time: 'PM',
         day: day,
+        time: 'PM',
         steps: [
           'Cleanse with The Ordinary Glucoside Foaming Cleanser.',
           'Apply The Ordinary Retinol 1% in Squalane.',
-          'Apply moisturizer: PDRN Hyaluronic Acid 100 Moisturizing Cream or The Ordinary Natural Moisturizing Factors + PhytoCeramides.',
-          'Optional: use a small amount of The Ordinary 100% Fermented Rose Hip Seed Oil.'
+          'Apply moisturizer: PDRN Hyaluronic Acid 100 Moisturizing Cream or The Ordinary Natural Moisturizing Factors + PhytoCeramides.'
         ],
-        note: fridayText
+        note: 'Retinol night.'
+      };
+    }
+
+    if (day === 'Wednesday') {
+      return {
+        day: day,
+        time: 'PM',
+        steps: [
+          'Cleanse with The Ordinary Glucoside Foaming Cleanser.',
+          'Apply The Ordinary Multi-Peptide + Copper Peptides 1% Serum.',
+          'Apply moisturizer: PDRN Hyaluronic Acid 100 Moisturizing Cream or The Ordinary Natural Moisturizing Factors + PhytoCeramides.'
+        ],
+        note: 'Use peptides until the bottle is finished.'
       };
     }
 
     if (day === 'Sunday') {
       return {
-        time: 'PM',
         day: day,
+        time: 'PM',
         steps: [
           'Cleanse with The Ordinary Glucoside Foaming Cleanser.',
           'Apply Optaderm Renewal.',
           'Apply The Ordinary Soothing & Barrier Support Serum.',
           'Apply moisturizer: PDRN Hyaluronic Acid 100 Moisturizing Cream or The Ordinary Natural Moisturizing Factors + PhytoCeramides.'
         ],
-        note: 'Exfoliation night. Do not use retinol, peptides or GF 15% tonight.'
+        note: 'Exfoliation night.'
       };
     }
 
     return {
-      time: 'PM',
       day: day,
+      time: 'PM',
       steps: [
         'Cleanse with The Ordinary Glucoside Foaming Cleanser.',
-        'Apply The Ordinary Multi-Peptide + Copper Peptides 1% Serum.',
-        'Apply moisturizer: PDRN Hyaluronic Acid 100 Moisturizing Cream or The Ordinary Natural Moisturizing Factors + PhytoCeramides.',
-        'Optional: use a small amount of The Ordinary 100% Fermented Rose Hip Seed Oil.'
+        'Apply The Ordinary GF 15% Solution.',
+        'Apply moisturizer: PDRN Hyaluronic Acid 100 Moisturizing Cream or The Ordinary Natural Moisturizing Factors + PhytoCeramides.'
       ],
-      note: 'Recovery night for elasticity, repair and barrier support. If your skin feels irritated, swap peptides for The Ordinary Soothing & Barrier Support Serum.'
+      note: 'GF recovery night.'
     };
   }
 
@@ -305,8 +296,8 @@
   var time = now.getHours() >= 17 ? 'PM' : 'AM';
   var routine = getRoutine(time, day);
 
-  document.getElementById('autoTime').textContent = routine.time;
   document.getElementById('autoDay').textContent = routine.day;
+  document.getElementById('autoTime').textContent = routine.time;
   fillList('autoSteps', routine.steps);
   document.getElementById('autoNote').textContent = routine.note;
 })();
